@@ -4,10 +4,10 @@ git clone https://github.com/paul99/v8m-rb.git -b dm-dev-mipsbe
 git clone https://github.com/joyent/node.git -b v0.10.5-release node-v0.10-5-mips
 
 # Sets up aliases for gcc & binutils, to support cross-compilation of v8 with gyp.
-export V8SOURCE=/home/${USER}/work/openwrt/v8m-rb
-export NODEJSSOURCE=/home/${USER}/work/openwrt/node-v0.10-5-mips
+export V8SOURCE=${PWD}/v8m-rb
+export NODEJSSOURCE=${PWD}/node-v0.10-5-mips
 
-export BASEDIR=/home/${USER}/work/openwrt/openwrtsource
+export BASEDIR=${PWD}/openwrtsource
 export STAGING_DIR=${BASEDIR}/staging_dir
 
 # Code Sourcery 2012.03-63 release
@@ -26,6 +26,12 @@ LIBPATH=${STAGING_DIR}/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/lib/
 export LDFLAGS='-Wl,-rpath-link '${LIBPATH}
 
 export GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions=false"
+
+#echo ${V8SOURCE}
+#echo ${NODEJSSOURCE}
+#echo ${BASEDIR}
+#echo ${STAGING_DIR}
+#echo ${LIBPATH}
 
 # build patched version of v8 as a shared library
 cd ${V8SOURCE}
