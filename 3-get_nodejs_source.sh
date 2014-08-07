@@ -42,4 +42,5 @@ make snapshot=off -j1
 
 # copy node.js and libv8.so MIPS and deploy
 # ${NODEJSSOURCE}/out/Release/node
+# /home/seven/work/openwrt/node-v0.10-5-mips/out
 # ${V8SOURCE}/out/mips.release/lib.target/libv8.so
