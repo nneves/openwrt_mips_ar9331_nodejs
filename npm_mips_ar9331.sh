@@ -18,9 +18,9 @@ export npm_config_arch=mips
 #<path to the node source>
 export npm_config_nodedir=${NODEJSSOURCE}
 
-echo "Cross-compile NPM package for OpenWrt MIPS AR9331 SoC: "$1
+echo "Cross-compile NPM package for OpenWrt MIPS AR9331 SoC: npm $@"
 
-npm install $1
+npm $@
 #npm install serialport
 
 
