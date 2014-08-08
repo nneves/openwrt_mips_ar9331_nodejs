@@ -40,6 +40,9 @@ cp ../.config ./
 time make V=99
 cd ..
 
+#echo "Please enter some input: "
+#read input_variable
+
 #-------------------------------------------------------------------------
 # Cross-compile V8 and Node.js
 #-------------------------------------------------------------------------
@@ -47,6 +50,9 @@ cd ..
 git clone https://github.com/paul99/v8m-rb.git -b dm-dev-mipsbe
 # Get node.js version 0.10.5
 git clone https://github.com/joyent/node.git -b v0.10.5-release node-v0.10-5-mips
+
+# Save current path
+export NODEJS_MIPS_AR9331=${PWD}
 
 # Sets up aliases for gcc & binutils, to support cross-compilation of v8 with gyp.
 export V8SOURCE=${PWD}/v8m-rb
@@ -82,16 +88,28 @@ export GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions
 cd ${V8SOURCE}
 make clean
 make dependencies
-make mips.release library=shared snapshot=off -j1
+time make mips.release library=shared snapshot=off -j1
 # lib will be compiled here => v8m-rb/out/mips.release/lib.target/libv8.so
 
+#echo "Please enter some input: "
+#read input_variable
 
 # build node.js with support to v8 mips shared library
 cd ${NODEJSSOURCE}
 ./configure --without-snapshot --shared-v8 --shared-v8-includes=${V8SOURCE}/include/ --shared-v8-libpath=${V8SOURCE}/out/mips.release/lib.target --dest-cpu=mips
-make snapshot=off -j1
+time make snapshot=off -j1
 
 # copy node.js and libv8.so MIPS and deploy
 # ${NODEJSSOURCE}/out/Release/node
 # /home/seven/work/openwrt/node-v0.10-5-mips/out
 # ${V8SOURCE}/out/mips.release/lib.target/libv8.so
+
+#-------------------------------------------------------------------------
+# Deploy cross-compiled V8 and Node.js
+#-------------------------------------------------------------------------
+cd ${NODEJS_MIPS_AR9331}
+mkdir nodejs_deploy
+cp node-v0.10-5-mips/out/Release/node nodejs_deploy/
+cp v8m-rb/out/mips.release/lib.target/libv8.so nodejs_deploy/
+file nodejs_deploy/node
+file nodejs_deploy/libv8.so
